@@ -1,0 +1,60 @@
+< !DOCTYPE html>
+
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Calculate</title>
+        <!-- <script src="config.js"></script> -->
+    </head>
+
+    <body>
+
+        <h2>todo title: </h2><input id="todo" type="text" placeholder="todo title">
+        <h2>todo: </h2><input id="todo1" type="text" placeholder="todo">
+        <button onclick="giveTodo()">add todo</button>
+        <div id="final"> </div>
+
+        <script>
+            let todos = []
+            function giveTodo() {
+                const todo = document.getElementById("todo").value
+                const todoItself = document.getElementById("todo1").value
+                const stuff = {
+                    todoTitle: todo,
+                    todo: todoItself
+                }
+                fetch(`http://localhost:5000/todo`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(stuff)
+
+                }).then((response) => {
+                    return response.json()
+                }).then((data) => {
+                    todos.push(data)
+
+                    displayTodos()
+
+
+                })
+            }
+
+            function displayTodos() {
+                const finalDiv = document.getElementById("final")
+
+                finalDiv.innerHTML = '<h1> all todos: </h1>'
+
+                todos.forEach(todos => {
+                    finalDiv.innerHTML += `<p><div> ${todos.todoTitle}</div> <div>${todos.todo}</div> <div> <button> mark as done </button> </div> </p>`
+                })
+
+            }
+
+        </script>
+    </body>
+
+    </html>
